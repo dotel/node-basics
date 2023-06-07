@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Async Demo</title>
+</head>
+
+<body>
+  <h1>Async Demo</h1>
+  <label for="input">Type something:</label>
+  <input type="text" id="input">
+  <button id="generateBtn">Generate Prime Number</button>
+  <h2 id="disabledText"></h2>
+  <script type="module">
+    document.getElementById('generateBtn').addEventListener('click', async function () {
+      // Generate prime numbers in the background. Notice how thread is not blocked, 
+      // because the fetch is being taken care by the browser asynchronously!
+      await fetch('https://jsonplaceholder.typicode.com/todos/1')
+      .then(response => response.json())
+      .then(json => console.log(json))
+
+      document.getElementById('disabledText').innerText = `Fetch complete`
+
+    });
+  </script>
+</body>
+
+</html>

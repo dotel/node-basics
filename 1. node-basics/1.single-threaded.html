@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Single-Threaded JavaScript Demo</title>
+</head>
+
+<body>
+  <h1>Single-Threaded JavaScript Demo</h1>
+  <label for="input">Type something:</label>
+  <input type="text" id="input">
+  <button id="generateBtn">Generate Prime Number</button>
+  <h2 id="disabledText"></h2>
+  <script>
+    function isPrime(number) {
+      if (number < 2) return false;
+      for (let i = 2; i <= Math.sqrt(number); i++) {
+        if (number % i === 0) return false;
+      }
+      return true;
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', function () {
+      // Generate prime numbers in the background, notice how the thread is blocked and you can't interact with UI
+      // when the prime numbers are being generated
+      let primeCounter = 0;
+      for (let num = 2; num <= 10000000; num++) {
+        if (isPrime(num)) {
+          primeCounter++
+        }
+      }
+      document.getElementById('disabledText').innerText = `Prime generation complete ${primeCounter} primes`
+
+    });
+  </script>
+</body>
+
+</html>

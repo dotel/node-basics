@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+    react_node_shop:
+        container_name: 'react_node_shop'
+        build:
+            context: .
+            target: 'dev'
+        volumes:
+            - .:/app
+        links:
+            - react_node_shop_db
+            - react_node_shop_test_db
+        depends_on:
+            - react_node_shop_db
+            - react_node_shop_test_db
+        ports:
+            - 8080:3000
+        environment:
+            DATABASE_URL: postgresql://postgres:postgres@react_node_shop_db:5432/react_node_shop_db?schema=public
+
+    react_node_shop_db:
+        image: postgres:14.5-alpine
+        restart: always
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - '5432:5432'
+        volumes:
+            - react_node_shop_db:/var/lib/postgresql/data
+
+    react_node_shop_test_db:
+        image: postgres:14.5-alpine
+        restart: always
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - '5434:5432'
+        volumes:
+            - react_node_shop_test_db:/var/lib/postgresql/data
+
+    padmin_widgets:
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: admin
+        volumes:
+            - ./docker-compose-presets/servers.json:/pgadmin4/servers.json
+            - ./docker-compose-presets/pgpass.conf:/pgadmin4/pgpass.json
+        image: dpage/pgadmin4:6.18
+        ports:
+            - 5000:80
+        depends_on:
+            - react_node_shop_db
+
+volumes:
+    react_node_shop_db:
+        driver: local
+    react_node_shop_test_db:
+        driver: local
