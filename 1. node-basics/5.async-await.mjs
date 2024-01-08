@@ -29,5 +29,5 @@ async function fetchData() {
   }
 }
 
-await fetchData();
+fetchData();
 console.log('should be printed at last')

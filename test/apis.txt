@@ -1,0 +1,7 @@
+GET all todos: /todos
+Delete todo by Id: /todos/:id
+
+
+GET todo by Id: /todos/:id
+PATCH todo by Id: /todos/:id
+POST todo /todos
