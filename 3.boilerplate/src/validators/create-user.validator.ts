@@ -4,15 +4,18 @@ import { z } from 'zod'
 export const createUserDto = z.object({
     body: z.object({
         name: z.string({
-            required_error: 'Name is required',
+            required_error: 'name is required',
         }),
         email: z
             .string({
-                required_error: 'Email is required',
+                required_error: 'email is required',
             })
             .email('It is an email'),
         password: z.string({
-            required_error: 'Password is required',
+            required_error: 'password is required',
+        }),
+        address: z.string({
+            required_error: 'address is required',
         }),
     }),
 })

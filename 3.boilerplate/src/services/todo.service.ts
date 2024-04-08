@@ -8,44 +8,41 @@
 import Boom from '@hapi/boom'
 import prisma from '../libs/prisma'
 
-export const createPost = async (body: any) => {
+export const createTodo = async (body: any) => {
     const { title, content, authorEmail } = body
-    return await prisma.post.create({
+    return await prisma.todo.create({
         data: {
             title,
-            content,
-            author: { connect: { email: authorEmail } },
+            userId: 4
         },
     })
 }
 
-export const findPostById = async (id: string) => {
+export const findTodoById = async (id: Number) => {
     try {
-        return await prisma.post.findUniqueOrThrow({
+        return await prisma.todo.findUniqueOrThrow({
             where: { id: Number(id) },
         })
     } catch (err: any) {
         if (err.code === 'P2025') {
-            throw Boom.notFound('Post not found')
+            throw Boom.notFound('Todo not found')
         } else {
             throw err
         }
     }
 }
 
-export const updatePostById = async (id: string) => {
-    return await prisma.post.update({
+export const updateTodoById = async (id: Number, todo: any) => {
+    return await prisma.todo.update({
         where: { id: Number(id) },
         data: {
-            viewCount: {
-                increment: 1,
-            },
+            title: todo.title
         },
     })
 }
 
-export const deleteById = async (id: string) => {
-    return await prisma.post.delete({
+export const deleteById = async (id: Number) => {
+    return await prisma.todo.delete({
         where: {
             id: Number(id),
         },

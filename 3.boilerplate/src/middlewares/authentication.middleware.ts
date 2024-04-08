@@ -17,14 +17,12 @@ export function authenticateToken(
             .json({ success: false, message: 'Missing authentication token' })
     }
 
-    console.log('am i here?')
 
     try {
         // Verify and decode the token
         const decodedToken = jwt.verify(token, 'random-secret')
         console.log('but not here right?')
         // Attach the decoded token to the request object
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         req.user = decodedToken
 
@@ -37,7 +35,6 @@ export function authenticateToken(
 }
 
 export function isAdmin(req: Request, res: Response, next: NextFunction) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { user }: { user: any } = req
 

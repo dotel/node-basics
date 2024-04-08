@@ -6,15 +6,13 @@
 
 import { Router } from 'express'
 
-import * as postController from '../controllers/post.controller'
+import * as postController from '../controllers/todo.controller'
 import { validate } from '../utils/validate'
 import { createPostDto } from '../validators/create-post.validator'
 
 const router = Router()
 
 router.post(`/`, validate(createPostDto), postController.create)
-
-router.put('/:id/views', postController.updateByID)
 
 router.delete(`/:id`, postController.deleteById)
 

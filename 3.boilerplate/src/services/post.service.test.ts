@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 
-import * as PostService from '../services/post.service'
+import * as PostService from './todo.service'
 import prisma from '../libs/__mocks__/prisma'
 import { describe, beforeEach, vi, it, expect } from 'vitest'
 import { Post } from '@prisma/client'
