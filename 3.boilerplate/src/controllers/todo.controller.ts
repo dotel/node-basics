@@ -14,7 +14,7 @@ export const create = async (
     next: NextFunction
 ) => {
     try {
-        const data = await todoService.createTodo(req.body)
+        const data = await todoService.createTodo(req.body, (req as any).user.userId)
         res.json(data)
     } catch (err) {
         next(err)
@@ -34,6 +34,20 @@ export const findByID = async (
     }
 }
 
+export const findAll = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        console.log((req as any).user)
+        const userId = (req as any).user.userId;
+        const data = await todoService.getAll(userId)
+        res.json(data)
+    } catch (err) {
+        next(err)
+    }
+}
 export const updateByID = async (req: Request, res: Response) => {
     const { id } = req.params
 
@@ -46,6 +60,6 @@ export const updateByID = async (req: Request, res: Response) => {
 export const deleteById = async (req: Request, res: Response) => {
     const { id } = req.params
     // @TODO: Handle errors
-    const post = await todoService.deleteById(Number(id))
+    const post = await todoService.deleteById(Number(id), (req as any).user.userId)
     res.status(HttpStatus.NO_CONTENT).json(post)
 }

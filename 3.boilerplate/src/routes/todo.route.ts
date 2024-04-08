@@ -9,13 +9,15 @@ import { Router } from 'express'
 import * as postController from '../controllers/todo.controller'
 import { validate } from '../utils/validate'
 import { createPostDto } from '../validators/create-post.validator'
+import { authenticateToken } from '../middlewares/authentication.middleware'
 
 const router = Router()
 
-router.post(`/`, validate(createPostDto), postController.create)
+router.get('/', authenticateToken, postController.findAll)
+router.post(`/`, validate(createPostDto), authenticateToken, postController.create)
 
-router.delete(`/:id`, postController.deleteById)
+router.delete(`/:id`, authenticateToken, postController.deleteById)
 
-router.get(`/:id`, postController.findByID)
+router.get(`/:id`, authenticateToken,  postController.findByID)
 
 export default router

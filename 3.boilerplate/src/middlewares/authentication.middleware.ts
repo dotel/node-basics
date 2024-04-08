@@ -10,7 +10,7 @@ export function authenticateToken(
     // Extract the token from the request headers
     const token =
         req.headers.authorization && req.headers.authorization.split(' ')[1]
-
+    console.log('token', token, req.body)
     if (!token) {
         return res
             .status(401)

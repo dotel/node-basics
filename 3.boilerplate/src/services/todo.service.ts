@@ -8,14 +8,20 @@
 import Boom from '@hapi/boom'
 import prisma from '../libs/prisma'
 
-export const createTodo = async (body: any) => {
-    const { title, content, authorEmail } = body
+export const createTodo = async (body: any, userId: number) => {
+    const { title } = body
     return await prisma.todo.create({
         data: {
             title,
-            userId: 4
+            userId
         },
     })
+}
+
+export const getAll = async (userId: number) => {
+        return await prisma.todo.findMany({
+            where: {userId: userId}
+        })
 }
 
 export const findTodoById = async (id: Number) => {
@@ -41,7 +47,15 @@ export const updateTodoById = async (id: Number, todo: any) => {
     })
 }
 
-export const deleteById = async (id: Number) => {
+export const deleteById = async (id: Number, loggedInUserId: number) => {
+    const todo = await prisma.todo.delete({
+        where: {
+            id: Number(id),
+        },
+    })
+    if(todo.userId !== loggedInUserId){
+        throw Boom.forbidden("This ain't your todo")
+    }
     return await prisma.todo.delete({
         where: {
             id: Number(id),

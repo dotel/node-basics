@@ -6,8 +6,5 @@ export const createPostDto = z.object({
         title: z.string({
             required_error: 'Title is required',
         }),
-        userId: z.number({
-            required_error: 'userId is required'
-        })
     })
 })
