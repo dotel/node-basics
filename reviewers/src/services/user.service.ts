@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt'
 
 // user: any
 export async function login(body: any) {
-    const {email, password} = body
+    const { email, password } = body
     const user = await prisma.user.findFirstOrThrow({ where: { email } })
 
     // Compare the provided password with the stored hashed password
@@ -20,17 +20,44 @@ export async function login(body: any) {
     }
 
     // Generate a token
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
         { userId: user.id, isAdmin: user.isAdmin },
-        'random-secret',
+        process.env.ACCESS_TOKEN_KEY as string,
         {
-            expiresIn: '1h',
+            expiresIn: '1d',
         }
     )
 
-    // Return the token to the client
-    return { success: true, token }
+    const refreshToken = jwt.sign(
+        { userId: user.id, isAdmin: user.isAdmin },
+        process.env.REFRESH_TOKEN_KEY as string,
+        {
+            expiresIn: '7d',
+        }
+    )
+
+
+    // Return the accessToken to the client
+    return { success: true, accessToken, refreshToken }
 }
 
+
+export async function refresh(userId: number) {
+    const user = await prisma.user.findFirstOrThrow({ where: { id: userId } })
+
+
+    // Generate a token
+    const accessToken = jwt.sign(
+        { userId: user.id, isAdmin: user.isAdmin },
+        process.env.ACCESS_TOKEN_KEY as string,
+        {
+            expiresIn: '5m',
+        }
+    )
+
+
+    // Return the accessToken to the client
+    return { success: true, accessToken }
+}
 // Refresh token - long lived token
 // Access token - short lived token expires in 5 minutes

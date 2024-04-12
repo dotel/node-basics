@@ -7,9 +7,11 @@
 
 import Boom from '@hapi/boom'
 import prisma from '../libs/prisma'
+import { z } from 'zod'
+import { createPostDto, createPostDtoBody } from '../validators/create-post.validator'
 
-export const createTodo = async (body: any, userId: number) => {
-    const { title } = body
+export const createTodo = async (body: z.infer<typeof createPostDtoBody>, userId: number) => {
+    const {title} = body
     return await prisma.todo.create({
         data: {
             title,
@@ -18,6 +20,8 @@ export const createTodo = async (body: any, userId: number) => {
     })
 }
 
+// select * from todo
+// select * from todo where userId = 4
 export const getAll = async (userId: number) => {
         return await prisma.todo.findMany({
             where: {userId: userId}
@@ -38,7 +42,11 @@ export const findTodoById = async (id: Number) => {
     }
 }
 
-export const updateTodoById = async (id: Number, todo: any) => {
+export const updateTodoById = async (id: number, todo: any, loggedInUserId: number) => {
+    const todoToUpdate = await prisma.todo.findFirstOrThrow({where: {id}})
+    if(todoToUpdate.userId != loggedInUserId) {
+        throw Boom.forbidden('You cannnot do thissss')
+    }
     return await prisma.todo.update({
         where: { id: Number(id) },
         data: {
@@ -48,17 +56,21 @@ export const updateTodoById = async (id: Number, todo: any) => {
 }
 
 export const deleteById = async (id: Number, loggedInUserId: number) => {
-    const todo = await prisma.todo.delete({
-        where: {
-            id: Number(id),
-        },
-    })
-    if(todo.userId !== loggedInUserId){
-        throw Boom.forbidden("This ain't your todo")
+    try{
+        const todo = await prisma.todo.delete({
+            where: {
+                id: Number(id),
+            },
+        })
+        if(todo.userId !== loggedInUserId){
+            throw Boom.forbidden("This ain't your todo")
+        }
+        return await prisma.todo.delete({
+            where: {
+                id: Number(id),
+            },
+        })
+    } catch(e: any) {
+        console.log('something terrible is happing', e)
     }
-    return await prisma.todo.delete({
-        where: {
-            id: Number(id),
-        },
-    })
 }

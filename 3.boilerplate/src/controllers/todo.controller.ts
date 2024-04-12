@@ -41,25 +41,35 @@ export const findAll = async (
 ) => {
     try {
         console.log((req as any).user)
-        const userId = (req as any).user.userId;
-        const data = await todoService.getAll(userId)
+        const loggedInUserId = (req as any).user.userId;
+        const data = await todoService.getAll(loggedInUserId)
         res.json(data)
     } catch (err) {
         next(err)
     }
 }
-export const updateByID = async (req: Request, res: Response) => {
-    const { id } = req.params
+export const updateByID = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const { id } = req.params
+    const loggedInUserId = (req as any).user.userId;
 
     // @TODO: Handle errors
-    const post = await todoService.updateTodoById(Number(id), req.body)
+    const post = await todoService.updateTodoById(Number(id), req.body, loggedInUserId)
 
     res.status(HttpStatus.CREATED).json(post)
+    } catch(e) {
+        next(e)
+    }
 }
 
-export const deleteById = async (req: Request, res: Response) => {
-    const { id } = req.params
-    // @TODO: Handle errors
-    const post = await todoService.deleteById(Number(id), (req as any).user.userId)
-    res.status(HttpStatus.NO_CONTENT).json(post)
+export const deleteById = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const { id } = req.params
+        // @TODO: Handle errors
+        const post = await todoService.deleteById(Number(id), (req as any).user.userId)
+        res.status(HttpStatus.NO_CONTENT).json(post)
+    
+    } catch(e)  {
+        next(e)
+    }
 }

@@ -18,6 +18,7 @@ model User {
   todos Todo[]
   address String
   password String
+  isAdmin Boolean @default(false)
 }
 
 model Todo {

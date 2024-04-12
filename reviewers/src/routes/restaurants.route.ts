@@ -14,11 +14,11 @@ import { authenticateToken, isAdmin } from '../middlewares/authentication.middle
 const router = Router()
 
 router.get('/', authenticateToken, postController.findAll)
-router.post(`/`, validate(createPostDto), authenticateToken, postController.create)
+// router.post(`/`, validate(createPostDto), authenticateToken, postController.create)
 
-router.delete(`/:id`, authenticateToken, postController.deleteById)
-router.patch(`/:id`, authenticateToken, postController.updateByID)
+// router.delete(`/:id`, authenticateToken, postController.deleteById)
+// router.patch(`/:id`, authenticateToken, postController.updateByID)
 
-router.get(`/:id`, authenticateToken,  postController.findByID)
+// router.get(`/:id`, authenticateToken, postController.findByID)
 
 export default router

@@ -11,9 +11,7 @@ export const find = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-      const { email, password }: { email: string; password: string } =
-          req.body
-      const { token } = await UserService.login(email, password)
+      const { token } = await UserService.login(req.body)
       res.json(token)
   } catch (error) {
       next(error)
@@ -21,14 +19,19 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 export const signup = async (req: Request, res: Response) => {
-  const {name, email, password, address} = req.body
+  const {name, email, password, address, isAdmin} = req.body
   const result = await prisma.user.create({
       data: {
           name,
           email,
           address,
+          isAdmin: isAdmin,
           password: await bcrypt.hash(password as string, 10),
       },
   })
   res.json(result)
 }
+
+
+// CRUD /profile/todos
+// CRUD /todos
