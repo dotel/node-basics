@@ -1,13 +1,13 @@
 import express from 'express'
 import cors from 'cors'
 import compression from 'compression'
-import cookieParser, { JSONCookies } from 'cookie-parser'
+import cookieParser from 'cookie-parser'
 import routes from '../routes'
 import * as ErrorMiddlewares from '../middlewares/errors.middleware'
 
 const app = express()
 
-// app.use(cookieParser());
+app.use(cookieParser())
 
 // app.use()
 app.use(compression())

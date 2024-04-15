@@ -25,7 +25,7 @@ export const refresh = async (req: Request, res: Response, next: NextFunction) =
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { accessToken, refreshToken } = await UserService.login(req.body)
-    res.cookie('refreshToken', refreshToken,
+    res.cookie('refreshToken', `Bearer ${refreshToken}`,
       { httpOnly: true });
 
     res.json(accessToken)

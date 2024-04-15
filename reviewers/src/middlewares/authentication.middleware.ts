@@ -37,6 +37,7 @@ export function authenticateRefreshToken(
     res: Response,
     next: NextFunction
 ) {
+    console.log(req.cookies, 'testing heheh')
     // Extract the token from the request headers
     const token =
         req.cookies.refreshToken && req.cookies.refreshToken.split(' ')[1]
