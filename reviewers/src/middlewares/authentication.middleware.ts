@@ -10,7 +10,6 @@ export function authenticateToken(
     // Extract the token from the request headers
     const token =
         req.headers.authorization && req.headers.authorization.split(' ')[1]
-    console.log('token', token, req.body)
     if (!token) {
         return res
             .status(401)
@@ -19,17 +18,14 @@ export function authenticateToken(
 
 
     try {
-        console.log('this is fine, line 22', process.env.ACCESS_TOKEN_KEY, token)
         // Verify and decode the token
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_KEY as string)
-        console.log('but not here right?')
         // Attach the decoded token to the request object
         // @ts-ignore
         req.user = decodedToken
 
         next() // Proceed to the next middleware or route handler
     } catch (error) {
-        console.log('line 23 crashed', error)
         return res
             .status(403)
             .json({ success: false, message: 'Invalid authentication token' })
@@ -71,7 +67,6 @@ export function authenticateRefreshToken(
 export function isAdmin(req: Request, res: Response, next: NextFunction) {
     // @ts-ignore
     const { user }: { user: any } = req
-
     if (user && user.isAdmin) {
         next() // Proceed to the next middleware or route handler
     } else {

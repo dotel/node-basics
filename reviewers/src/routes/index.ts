@@ -4,13 +4,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 import userRoutes from './user.route'
-import todoRouter from './restaurants.route'
+import restrosRouter from './restaurants.route'
 import { Router } from 'express'
 
 const router = Router()
 
 router.use('/users', userRoutes)
-router.use('/restros', todoRouter)
+router.use('/restros', restrosRouter)
 
 
 export default router
