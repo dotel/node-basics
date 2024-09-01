@@ -4,10 +4,10 @@
     "description": "",
     "scripts": {
         "dev": "nodemon ./src/app.ts",
+        "build": "tsc",
         "start": "node ./dist/app.js",
         "format": "prettier --write .",
         "lint-fix": "eslint --ignore-path .eslintignore . --fix",
-        "build": "tsc",
         "prepare": "husky install",
         "test:unit": "vitest -c ./vitest.config.unit.js",
         "test:unit:ui": "vitest -c ./vitest.config.unit.js --ui",

@@ -8,10 +8,11 @@ import * as ErrorMiddlewares from '../middlewares/errors.middleware'
 const app = express()
 
 app.use(cookieParser())
+console.log('running stuffs')
 
 // app.use()
 app.use(compression())
-// Allow all methods on all origin
+// Allow all methods/ on all origin
 app.use(cors({
   origin: 'http://localhost:3001',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
